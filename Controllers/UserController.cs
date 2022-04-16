@@ -1,12 +1,12 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using SoftStuApi.Services;
-using SoftStuApi.Models;
+using Backend.Services;
+using Backend.Models;
 
-namespace SoftStuApi.Controllers;
+namespace Backend.Controllers;
 [Authorize]
-[Controller]
+[ApiController]
 [Route("api/[controller]/[action]")]
 public class UserController: ControllerBase {
     
@@ -22,8 +22,8 @@ public class UserController: ControllerBase {
     [HttpGet("{userId}")]
     public async Task<ActionResult<User?>> GetOneUser(string userId) {
 
-        var User =await _userService.GetOneUserService(userId);
-        if(User is null){
+
+        if(!_userService.userIsCreated(userId)){
             return NotFound();
         }
 
@@ -41,33 +41,40 @@ public class UserController: ControllerBase {
 
     [HttpPut("{userId}")]
     public async Task<IActionResult> UpdateOneUser(string userId, [FromBody] User updatedUser) {
-        var User =await _userService.GetOneUserService(userId);
-        if(User is null){
+
+
+        if(!_userService.userIsCreated(userId)){
             return NotFound();
         }
 
-        updatedUser.Id=User.Id;
+        var user =await _userService.GetOneUserService(userId);
+        updatedUser.Id=user.Id;
         await _userService.UpdateOneUserService(userId,updatedUser);
 
-        return NoContent();
+        return Ok("Updated the user");
     }
     [HttpDelete("{userId}")]
     public async Task<IActionResult> DeleteOneUser(string userId) {
-        var User =await _userService.GetOneUserService(userId);
-        if(User is null){
+        if(!_userService.userIsCreated(userId)){
             return NotFound();
         }
 
         await _userService.DeleteOneUserService(userId);
-        return NoContent();
+        return Ok("Deleted the user");
 
     }
     [AllowAnonymous]
     [HttpPost]
-    public IActionResult Login([FromBody] Login user){
-        var token = _userService.AuthenticationService(user.username,user.password);
+    public IActionResult Login([FromBody]Login userLogin){
+        var token = _userService.AuthenticationService(userLogin.username,userLogin.password);
         if(token==null)
             return Unauthorized();
         return Ok(new{token});
     }
+}
+public class Login{
+     public string username { get; set; } = null!;
+
+    public string password { get; set; }= null!;
+
 }

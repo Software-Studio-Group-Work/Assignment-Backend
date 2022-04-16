@@ -1,5 +1,5 @@
-namespace SoftStuApi.Models;
+namespace Backend.Models;
 public class JWTSettings {
-    public string SecretKey { get; set; } = null!;
+    public string SecretKey { get; set; } 
 
 }

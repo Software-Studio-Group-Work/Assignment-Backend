@@ -1,17 +1,16 @@
-using SoftStuApi.Models;
+using Backend.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB.Bson;
 
-namespace SoftStuApi.Services;
+namespace Backend.Services;
 
 public class PostService{
         private readonly IMongoCollection<Post> _postCollection;
         
-    public PostService(IOptions<MongoDBSettings> mongoDBSettings) {
-        MongoClient client = new MongoClient(mongoDBSettings.Value.ConnectionString);
-        IMongoDatabase database = client.GetDatabase(mongoDBSettings.Value.DatabaseName);
-        _postCollection = database.GetCollection<Post>(mongoDBSettings.Value.CollectionName);
+    public PostService(MongoDbService mongoDbService) {
+
+        _postCollection = mongoDbService.PostsCollection;
     }
     public async Task<List<Post>> GetAllPostService() { 
         return await _postCollection.Find(_=>true).ToListAsync();
@@ -35,6 +34,14 @@ public class PostService{
     public async Task DeleteOnePostService(string postId) { 
         await _postCollection.DeleteOneAsync(x => x.Id == postId);
         return;
+    }
+        public bool postIsCreated(string postId){
+        var User = GetOnePostService(postId);
+
+        if(User is null){
+            return false;
+        }
+        return true;
     }
 
 }

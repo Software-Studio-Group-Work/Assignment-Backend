@@ -1,17 +1,19 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using SoftStuApi.Services;
-using SoftStuApi.Models;
+using Backend.Services;
+using Backend.Models;
 
 namespace SoftStuApi.Controllers;
 
-[Controller]
+[ApiController]
 [Route("api/[controller]/[action]")]
 public class PostController: ControllerBase {
     
     private readonly PostService _postService;
-    public PostController(PostService postService) {
+    private readonly UserService _userService;
+    public PostController(PostService postService,UserService userService) {
         _postService = postService;
+        _userService =userService;
     }
     [HttpGet]
     public async Task<List<Post>> GetAllPost() {
@@ -35,30 +37,36 @@ public class PostController: ControllerBase {
     }
     [HttpPost]
     public async Task<IActionResult> CreateOnePost([FromBody] Post newPost) {
+
+        if(!_userService.userIsCreated(newPost.userId)){
+            return NotFound();
+        }
+
         await _postService.CreateOnePostService(newPost);
         return CreatedAtAction(nameof(GetOnePost), new { postId = newPost.Id }, newPost);
     }
     [HttpPut("{postId}")]
     public async Task<IActionResult> UpdateOnePost(string postId, [FromBody] Post updatedPost) {
-        var post =await _postService.GetOnePostService(postId);
-        if(post is null){
+       
+
+        if(!_postService.postIsCreated(postId)){
             return NotFound();
         }
-
+        var post =await _postService.GetOnePostService(postId);
         updatedPost.Id=post.Id;
         await _postService.UpdateOnePostService(postId,updatedPost);
 
-        return NoContent();
+        return Ok("Updated the post");
     }
     [HttpDelete("{postId}")]
     public async Task<IActionResult> DeleteOnePost(string postId) {
-        var post =await _postService.GetOnePostService(postId);
-        if(post is null){
+
+        if(!_postService.postIsCreated(postId)){
             return NotFound();
         }
 
         await _postService.DeleteOnePostService(postId);
-        return NoContent();
+        return Ok("Deleted the post");
 
     }
 }

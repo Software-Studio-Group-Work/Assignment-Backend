@@ -33,7 +33,7 @@ public class MongoDbService
 
     public IMongoCollection<User> UsersCollection { get { return _usersCollection; } }
 
-    public IMongoCollection<Post> ContentsCollection { get { return _postsCollection; } }
+    public IMongoCollection<Post> PostsCollection { get { return _postsCollection; } }
 
     public IMongoCollection<Comment> CommentsCollection { get { return _commentsCollection; } }
 }

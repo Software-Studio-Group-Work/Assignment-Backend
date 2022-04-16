@@ -1,14 +1,13 @@
 using MongoDB.Bson;
-
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace SoftStuApi.Models;
+namespace Backend.Models;
 
 public class User
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
+    public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
     public string username { get; set; } = null!;
 
