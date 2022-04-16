@@ -1,5 +1,5 @@
 namespace Backend.Models;
 public class JWTSettings {
-    public string SecretKey { get; set; } 
+    public string SecretKey { get; set; } =null!;
 
 }

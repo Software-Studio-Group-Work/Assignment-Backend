@@ -23,6 +23,9 @@ public class UserService{
     public async Task<User?> GetOneUserService(string userId){
         return await _userCollection.Find(x=>x.Id==userId).FirstOrDefaultAsync();
     }
+    public async Task<User?> GetOneUserService(string username,string password){
+        return await _userCollection.Find(x=>(x.username==username&&x.password==password)).FirstOrDefaultAsync();
+    }
     public async Task CreateOneUserService(User user) { 
         await _userCollection.InsertOneAsync(user);
         return;
@@ -55,7 +58,7 @@ public class UserService{
             Subject =new ClaimsIdentity(new Claim[]{
                 new Claim(ClaimTypes.GivenName,username),
             }),
-            Expires=DateTime.UtcNow.AddHours(1),
+            Expires=DateTime.UtcNow.AddHours(6),
 
             SigningCredentials=new SigningCredentials(
                 new SymmetricSecurityKey(tokenKey),

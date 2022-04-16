@@ -17,7 +17,7 @@ public class PostService{
         
     }
     public async Task<List<Post>> GetUserPostService(string userId) { 
-        return await _postCollection.Find(x=>x.Id==userId).ToListAsync();
+        return await _postCollection.Find(x=>x.userId==userId).ToListAsync();
         
     }
     public async Task<Post?> GetOnePostService(string postId){
@@ -36,9 +36,9 @@ public class PostService{
         return;
     }
         public bool postIsCreated(string postId){
-        var User = GetOnePostService(postId);
+        var post = GetOnePostService(postId);
 
-        if(User is null){
+        if(post is null){
             return false;
         }
         return true;

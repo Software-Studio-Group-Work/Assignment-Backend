@@ -5,7 +5,7 @@ using Backend.Services;
 using Backend.Models;
 
 namespace Backend.Controllers;
-[Authorize]
+// [Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class UserController: ControllerBase {
@@ -69,7 +69,10 @@ public class UserController: ControllerBase {
         var token = _userService.AuthenticationService(userLogin.username,userLogin.password);
         if(token==null)
             return Unauthorized();
-        return Ok(new{token});
+
+        var user =_userService.GetOneUserService(userLogin.username,userLogin.password);
+
+        return Ok(new{token,user});
     }
 }
 public class Login{

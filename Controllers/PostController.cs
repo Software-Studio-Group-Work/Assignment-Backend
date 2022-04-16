@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.Services;
 using Backend.Models;
 
-namespace SoftStuApi.Controllers;
+namespace Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
@@ -27,8 +27,7 @@ public class PostController: ControllerBase {
     [HttpGet("{postId}")]
     public async Task<ActionResult<Post?>> GetOnePost(string postId) {
 
-        var post =await _postService.GetOnePostService(postId);
-        if(post is null){
+        if(!_postService.postIsCreated(postId)){
             return NotFound();
         }
 

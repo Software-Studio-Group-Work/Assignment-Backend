@@ -14,6 +14,8 @@ builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSet
 builder.Services.AddSingleton<MongoDbService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<PostService>();
+builder.Services.AddSingleton<CommentService>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddAuthentication(options =>  
