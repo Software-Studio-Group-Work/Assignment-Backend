@@ -9,9 +9,6 @@ namespace Backend.Controllers;
 [Route("api/[controller]/[action]")]
 public class CommentController: ControllerBase {
     private readonly CommentService _commentService;
-
-
-
     public CommentController(CommentService commentService) {
         _commentService = commentService;
 

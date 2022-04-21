@@ -1,13 +1,9 @@
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+
 
 namespace Backend.Models;
 
-public class User
+public class Register
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
     public string username { get; set; } = null!;
 
@@ -15,7 +11,7 @@ public class User
 
     public string name { get; set; } = null!;
 
-    public byte[]  picture { get; set; } = null!;
+    public IFormFile  picture { get; set; } = null!;
     public string religion { get; set; } = null!;
     public string role { get; set; } = null!;
     public bool isBan { get; set; } 
