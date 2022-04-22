@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-
+using System.ComponentModel.DataAnnotations;
 namespace Backend.Models;
 
 public class Announcement
@@ -9,8 +9,13 @@ public class Announcement
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
+    [Required(ErrorMessage = "adminId is required.")]  
     public string adminId { get; set; }= null!;
+
+    [Required(ErrorMessage = "title is required.")]  
     public string title { get; set; } = null!;
+
+    [Required(ErrorMessage = "decription is required.")]  
     public string decription { get; set; } = null!;
-    public string link{ get; set; } = null!;
+
 }

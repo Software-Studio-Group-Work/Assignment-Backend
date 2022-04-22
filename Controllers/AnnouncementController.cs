@@ -20,44 +20,46 @@ public class AnnouncementController: ControllerBase {
         return await _announcementService.GetAllAnnouncementService();
     }
     [AllowAnonymous]
-    [HttpGet("{AdminId}")]
-    public async Task<List<Announcement>> GetAdminAnnouncement(string AdminId) {
+    [HttpGet("{adminId}")]
+    public async Task<List<Announcement>> GetAdminAnnouncement(string adminId) {
 
-        return await _announcementService.GetAdminAnnouncementService(AdminId);
+        return await _announcementService.GetAdminAnnouncementService(adminId);
     }
     [AllowAnonymous]
-    [HttpGet("{AnnouncementId}")]
-    public async Task<ActionResult<Announcement?>> GetOneAnnouncement(string AnnouncementId) {
-        return await _announcementService.GetOneAnnouncementService(AnnouncementId);
+    [HttpGet("{announcementId}")]
+    public async Task<ActionResult<Announcement?>> GetOneAnnouncement(string announcementId) {
+        return await _announcementService.GetOneAnnouncementService(announcementId);
 
     }
     [Authorize(Roles = "admin")]
     [HttpPost]
     public async Task<IActionResult> CreateOneAnnouncement([FromBody] Announcement newAnnouncement) {
         await _announcementService.CreateOneAnnouncementService(newAnnouncement);
-        return CreatedAtAction(nameof(GetOneAnnouncement), new { AnnouncementId = newAnnouncement.Id }, newAnnouncement);
+        return CreatedAtAction(nameof(GetOneAnnouncement), new { announcementId = newAnnouncement.Id }, newAnnouncement);
     }
     [Authorize(Roles = "admin")]
-    [HttpPut("{AnnouncementId}")]
-    public async Task<IActionResult> UpdateOneAnnouncement(string AnnouncementId, [FromBody] Announcement updatedAnnouncement) {
-        if(!_announcementService.AnnouncementIsCreated(AnnouncementId)){
-            return NotFound();
-        }
-        var Announcement =await _announcementService.GetOneAnnouncementService(AnnouncementId);
+    [HttpPut("{announcementId}")]
+    public async Task<IActionResult> UpdateOneAnnouncement(string announcementId, [FromBody] Announcement updatedAnnouncement) {
+
+        var Announcement =await _announcementService.GetOneAnnouncementService(announcementId);
+
+        if(Announcement!=null){
         updatedAnnouncement.Id=Announcement.Id;
-        await _announcementService.UpdateOneAnnouncementService(AnnouncementId,updatedAnnouncement);
-
+        await _announcementService.UpdateOneAnnouncementService(announcementId,updatedAnnouncement);
         return Ok("Updated the Announcement");
+        }else{
+            return NotFound();
+        }
     }
     [Authorize(Roles = "admin")]
-    [HttpDelete("{AnnouncementId}")]
-    public async Task<IActionResult> DeleteOneAnnouncement(string AnnouncementId) {
+    [HttpDelete("{announcementId}")]
+    public async Task<IActionResult> DeleteOneAnnouncement(string announcementId) {
 
-        if(!_announcementService.AnnouncementIsCreated(AnnouncementId)){
+        if(!_announcementService.AnnouncementIsCreated(announcementId)){
             return NotFound();
         }
 
-        await _announcementService.DeleteOneAnnouncementService(AnnouncementId);
+        await _announcementService.DeleteOneAnnouncementService(announcementId);
         return Ok("Deleted the Announcement");
 
     }

@@ -50,15 +50,16 @@ public class PostController: ControllerBase {
     [HttpPut("{postId}")]
     public async Task<IActionResult> UpdateOnePost(string postId, [FromBody] Post updatedPost) {
        
-
-        if(!_postService.postIsCreated(postId)){
-            return NotFound();
-        }
+    
         var post =await _postService.GetOnePostService(postId);
+        if(post!=null){
         updatedPost.Id=post.Id;
         await _postService.UpdateOnePostService(postId,updatedPost);
 
         return Ok("Updated the post");
+        }else{
+             return NotFound();
+        }
     }
     [HttpDelete("{postId}")]
     public async Task<IActionResult> DeleteOnePost(string postId) {

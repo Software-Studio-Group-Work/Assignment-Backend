@@ -50,7 +50,7 @@ public class UserService{
     public string AuthenticationService(string username,string password){
         User user= _userCollection.Find(x=>x.username==username&&x.password==password).FirstOrDefault();
         if(user==null){
-            return null;
+            return "";
         }
         var tokenHandler=new JwtSecurityTokenHandler();
         var tokenKey=Encoding.ASCII.GetBytes(key);

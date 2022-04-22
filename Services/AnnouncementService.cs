@@ -21,7 +21,7 @@ public class AnnouncementService{
         
     }
     public async Task<Announcement?> GetOneAnnouncementService(string announcementId){
-        return await _announcementsCollection.Find(x=>x.Id==announcementId).FirstOrDefaultAsync();
+        return await _announcementsCollection.Find(x=>x.Id==announcementId).FirstOrDefaultAsync();;
     }
     public async Task CreateOneAnnouncementService(Announcement announcement) { 
         await _announcementsCollection.InsertOneAsync(announcement);
@@ -39,6 +39,7 @@ public class AnnouncementService{
         var announcement = GetOneAnnouncementService(announcementId);
 
         if(announcement is null){
+
             return false;
         }
         return true;

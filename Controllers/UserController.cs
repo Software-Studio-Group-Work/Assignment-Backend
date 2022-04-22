@@ -37,22 +37,31 @@ public class UserController: ControllerBase {
         await _userService.CreateOneUserService(anonymous);
         return CreatedAtAction(nameof(GetOneUser), new { userId = anonymous.Id }, anonymous.Id);
     }
+    [AllowAnonymous]
+    [HttpPost]
+    public IActionResult Login([FromBody]Login userLogin){
+        var token = _userService.AuthenticationService(userLogin.username,userLogin.password);
+        if(token=="")
+            return Unauthorized();
 
+        var user =_userService.GetOneUserService(userLogin.username,userLogin.password);
+
+        return Ok(new{token,user});
+    }
 
 
     [HttpPut("{userId}")]
     public async Task<IActionResult> UpdateOneUser(string userId, [FromBody] User updatedUser) {
-
-
-        if(!_userService.userIsCreated(userId)){
-            return NotFound();
-        }
-
         var user =await _userService.GetOneUserService(userId);
+
+        if(user!=null){
         updatedUser.Id=user.Id;
         await _userService.UpdateOneUserService(userId,updatedUser);
-
         return Ok("Updated the user");
+        }else{
+        return NotFound();
+        }
+        
     }
     [HttpDelete("{userId}")]
     public async Task<IActionResult> DeleteOneUser(string userId) {
@@ -64,15 +73,5 @@ public class UserController: ControllerBase {
         return Ok("Deleted the user");
 
     }
-    [AllowAnonymous]
-    [HttpPost]
-    public IActionResult Login([FromBody]Login userLogin){
-        var token = _userService.AuthenticationService(userLogin.username,userLogin.password);
-        if(token==null)
-            return Unauthorized();
 
-        var user =_userService.GetOneUserService(userLogin.username,userLogin.password);
-
-        return Ok(new{token,user});
-    }
 }

@@ -42,15 +42,16 @@ public class CommentController: ControllerBase {
     [HttpPut("{commentId}")]
     public async Task<IActionResult> UpdateOneComment(string commentId, [FromBody] Comment updatedComment) {
        
-
-        if(!_commentService.commentIsCreated(commentId)){
-            return NotFound();
-        }
         var comment =await _commentService.GetOneCommentService(commentId);
+
+        if(comment!=null){
         updatedComment.Id=comment.Id;
         await _commentService.UpdateOneCommentService(commentId,updatedComment);
 
         return Ok("Updated the Comment");
+        }else{
+            return NotFound();
+        }
     }
     [HttpDelete("{commentId}")]
     public async Task<IActionResult> DeleteOneComment(string commentId) {
