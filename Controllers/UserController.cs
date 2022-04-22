@@ -14,11 +14,12 @@ public class UserController: ControllerBase {
     public UserController(UserService UserService) {
         _userService = UserService;
     }
+    [AllowAnonymous]
     [HttpGet]
     public async Task<List<User>> GetAllUser() {
         return await _userService.GetAllUserService();
     }
-
+    [AllowAnonymous]
     [HttpGet("{userId}")]
     public async Task<ActionResult<User?>> GetOneUser(string userId) {
 

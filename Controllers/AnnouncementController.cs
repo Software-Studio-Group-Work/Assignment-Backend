@@ -14,17 +14,17 @@ public class AnnouncementController: ControllerBase {
 
     }
 
-
+    [AllowAnonymous]
     public async Task<List<Announcement>> GetAllAnnouncement() {
         return await _announcementService.GetAllAnnouncementService();
     }
-
+    [AllowAnonymous]
     [HttpGet("{AdminId}")]
     public async Task<List<Announcement>> GetAdminAnnouncement(string AdminId) {
 
         return await _announcementService.GetAdminAnnouncementService(AdminId);
     }
-    [Authorize]
+    [AllowAnonymous]
     [HttpGet("{AnnouncementId}")]
     public async Task<ActionResult<Announcement?>> GetOneAnnouncement(string AnnouncementId) {
         return await _announcementService.GetOneAnnouncementService(AnnouncementId);

@@ -13,17 +13,18 @@ public class LikePostController: ControllerBase {
         _likePostService = likePostService;
 
     }
+    [AllowAnonymous]
     [HttpGet]
     public async Task<List<LikePost>> GetAllLikePost() {
         return await _likePostService.GetAllLikePostService();
     }
-
+    [AllowAnonymous]
     [HttpGet("{postId}")]
     public async Task<List<LikePost>> GetLikesOnPost(string postId) {
         return await _likePostService.GetLikesOnPostService(postId);
 
     }
-
+    [AllowAnonymous]
     [HttpGet("{LikePostObject}")]
     public async Task<ActionResult<LikePost?>> GetOneLikePost(LikePost likePost) {
         return await _likePostService.GetOneLikePostService(likePost);

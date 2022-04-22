@@ -13,17 +13,18 @@ public class LikeCommentController: ControllerBase {
         _likeCommentService = likeCommentService;
 
     }
+    [AllowAnonymous]
     [HttpGet]
     public async Task<List<LikeComment>> GetAllLikeComment() {
         return await _likeCommentService.GetAllLikeCommentService();
     }
-
+    [AllowAnonymous]
     [HttpGet("{commentId}")]
     public async Task<List<LikeComment>> GetLikesOnComment(string commentId) {
         return await _likeCommentService.GetLikesOnCommentService(commentId);
 
     }
-
+    [AllowAnonymous]
     [HttpGet("{likeCommentObject}")]
     public async Task<ActionResult<LikeComment?>> GetOneLikeComment(LikeComment likeComment) {
         return await _likeCommentService.GetOneLikeCommentService(likeComment);
