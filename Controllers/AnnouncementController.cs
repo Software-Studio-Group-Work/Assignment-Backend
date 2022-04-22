@@ -15,6 +15,7 @@ public class AnnouncementController: ControllerBase {
     }
 
     [AllowAnonymous]
+    [HttpGet]
     public async Task<List<Announcement>> GetAllAnnouncement() {
         return await _announcementService.GetAllAnnouncementService();
     }
