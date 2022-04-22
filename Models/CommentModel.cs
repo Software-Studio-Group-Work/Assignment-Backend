@@ -10,7 +10,7 @@ public class Comment
     public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
     
     [BsonRepresentation(BsonType.ObjectId)]
-    public string userId { get; set; }
+    public string userId { get; set; }= null!;
 
     [BsonRepresentation(BsonType.ObjectId)]
     public string postId { get; set; }

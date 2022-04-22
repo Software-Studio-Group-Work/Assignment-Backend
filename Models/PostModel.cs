@@ -11,7 +11,7 @@ public class Post
     public string Id { get; set; }= ObjectId.GenerateNewId().ToString();
     
     [BsonRepresentation(BsonType.ObjectId)]
-    public string  userId { get; set; }
+    public string  userId { get; set; }= null!;
 
     public string title { get; set; }= null!;
 

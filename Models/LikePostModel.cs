@@ -7,9 +7,9 @@ public class LikePost
 {
 
     [BsonRepresentation(BsonType.ObjectId)]
-    public string userId { get; set; } 
+    public string userId { get; set; } = null!;
 
     [BsonRepresentation(BsonType.ObjectId)]
-    public string postId { get; set; }
+    public string postId { get; set; }= null!;
 
 }

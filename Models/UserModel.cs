@@ -15,7 +15,7 @@ public class User
 
     public string name { get; set; } = null!;
 
-    public byte[]  picture { get; set; } = null!;
+    public string  picture { get; set; } = null!;
     public string religion { get; set; } = null!;
     public string role { get; set; } = null!;
     public bool isBan { get; set; } 

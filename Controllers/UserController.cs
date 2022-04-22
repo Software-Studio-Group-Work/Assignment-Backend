@@ -5,7 +5,7 @@ using Backend.Services;
 using Backend.Models;
 
 namespace Backend.Controllers;
-// [Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class UserController: ControllerBase {
@@ -32,34 +32,9 @@ public class UserController: ControllerBase {
     }
     [AllowAnonymous]
     [HttpPost]
-    public async Task<IActionResult> Register([FromForm] Register anonymous) {
-
-        User newUser=null;
-        
-        using (var memoryStream = new MemoryStream())
-    {
-        await anonymous.picture.CopyToAsync(memoryStream);
-
-        // Upload the file if less than 2 MB
-        if (memoryStream.Length < 2097152)
-        {
-            newUser = new User()
-            {   username = anonymous.username,
-                password=anonymous.password,
-                name=anonymous.name,
-                picture = memoryStream.ToArray(),
-                religion=anonymous.religion,
-                role=anonymous.role,
-                isBan=anonymous.isBan,
-            };
-            await _userService.CreateOneUserService(newUser);
-        }
-        else
-        {
-            return BadRequest("The file is too large.");
-        }
-    }
-        return CreatedAtAction(nameof(GetOneUser), new { userId = newUser.Id }, newUser.Id);
+    public async Task<IActionResult> Register([FromBody] User anonymous) {
+        await _userService.CreateOneUserService(anonymous);
+        return CreatedAtAction(nameof(GetOneUser), new { userId = anonymous.Id }, anonymous.Id);
     }
 
 

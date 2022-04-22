@@ -2,9 +2,9 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Services;
 using Backend.Models;
-
+using Microsoft.AspNetCore.Authorization;
 namespace Backend.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class CommentController: ControllerBase {

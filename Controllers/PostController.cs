@@ -2,9 +2,9 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Services;
 using Backend.Models;
-
+using Microsoft.AspNetCore.Authorization;
 namespace Backend.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class PostController: ControllerBase {
@@ -15,15 +15,18 @@ public class PostController: ControllerBase {
         _postService = postService;
         _userService =userService;
     }
+    [AllowAnonymous]
     [HttpGet]
     public async Task<List<Post>> GetAllPost() {
         return await _postService.GetAllPostService();
     }
+    [AllowAnonymous]
     [HttpGet("{userId}")]
     public async Task<List<Post>> GetUserPost(string userId) {
 
         return await _postService.GetUserPostService(userId);
     }
+    [AllowAnonymous]
     [HttpGet("{postId}")]
     public async Task<ActionResult<Post?>> GetOnePost(string postId) {
 

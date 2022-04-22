@@ -48,7 +48,7 @@ public class UserService{
     }
 
     public string AuthenticationService(string username,string password){
-        var user= _userCollection.Find(x=>x.username==username&&x.password==password).FirstOrDefault();
+        User user= _userCollection.Find(x=>x.username==username&&x.password==password).FirstOrDefault();
         if(user==null){
             return null;
         }
@@ -56,7 +56,8 @@ public class UserService{
         var tokenKey=Encoding.ASCII.GetBytes(key);
         var tokenDescriptor= new SecurityTokenDescriptor(){
             Subject =new ClaimsIdentity(new Claim[]{
-                new Claim(ClaimTypes.GivenName,username),
+                new Claim("username",user.username),
+                new Claim(ClaimTypes.Role,user.role),
             }),
             Expires=DateTime.UtcNow.AddHours(6),
 

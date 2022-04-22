@@ -6,9 +6,9 @@ public class LikeComment
 {
 
     [BsonRepresentation(BsonType.ObjectId)]
-    public string userId { get; set; } 
+    public string userId { get; set; } = null!;
     
     [BsonRepresentation(BsonType.ObjectId)]
-    public string commentId { get; set; }
+    public string commentId { get; set; }= null!;
 
 }
