@@ -4,7 +4,7 @@ using Backend.Services;
 using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace Backend.Controllers;
-[Authorize(Roles = "admin")]
+[Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class AnnouncementController: ControllerBase {
@@ -13,25 +13,30 @@ public class AnnouncementController: ControllerBase {
         _announcementService = announcementService;
 
     }
-    [HttpGet]
+
+
     public async Task<List<Announcement>> GetAllAnnouncement() {
         return await _announcementService.GetAllAnnouncementService();
     }
+
     [HttpGet("{AdminId}")]
     public async Task<List<Announcement>> GetAdminAnnouncement(string AdminId) {
 
         return await _announcementService.GetAdminAnnouncementService(AdminId);
     }
+    [Authorize]
     [HttpGet("{AnnouncementId}")]
     public async Task<ActionResult<Announcement?>> GetOneAnnouncement(string AnnouncementId) {
         return await _announcementService.GetOneAnnouncementService(AnnouncementId);
 
     }
+    [Authorize(Roles = "admin")]
     [HttpPost]
     public async Task<IActionResult> CreateOneAnnouncement([FromBody] Announcement newAnnouncement) {
         await _announcementService.CreateOneAnnouncementService(newAnnouncement);
         return CreatedAtAction(nameof(GetOneAnnouncement), new { AnnouncementId = newAnnouncement.Id }, newAnnouncement);
     }
+    [Authorize(Roles = "admin")]
     [HttpPut("{AnnouncementId}")]
     public async Task<IActionResult> UpdateOneAnnouncement(string AnnouncementId, [FromBody] Announcement updatedAnnouncement) {
         if(!_announcementService.AnnouncementIsCreated(AnnouncementId)){
@@ -43,6 +48,7 @@ public class AnnouncementController: ControllerBase {
 
         return Ok("Updated the Announcement");
     }
+    [Authorize(Roles = "admin")]
     [HttpDelete("{AnnouncementId}")]
     public async Task<IActionResult> DeleteOneAnnouncement(string AnnouncementId) {
 
