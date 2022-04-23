@@ -17,4 +17,6 @@ public class Place
     public string picture { get; set; } = null!;
     public string decription { get; set; } = null!;
 
+    public string link { get; set; } = null!;
+
 }
