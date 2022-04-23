@@ -25,25 +25,25 @@ public class LikeCommentController: ControllerBase {
 
     }
     [AllowAnonymous]
-    [HttpGet("{likeCommentObject}")]
-    public async Task<ActionResult<LikeComment?>> GetOneLikeComment(LikeComment likeComment) {
-        return await _likeCommentService.GetOneLikeCommentService(likeComment);
+    [HttpGet("{likeCommentId}")]
+    public async Task<ActionResult<LikeComment?>> GetOneLikeComment(string likeCommentId) {
+        return await _likeCommentService.GetOneLikeCommentService(likeCommentId);
 
     }
     [HttpPost]
     public async Task<IActionResult> CreateOneLikeComment([FromBody] LikeComment newLikeComment) {
         await _likeCommentService.CreateOneLikeCommentService(newLikeComment);
-        return CreatedAtAction(nameof(GetOneLikeComment),newLikeComment);
+        return CreatedAtAction(nameof(GetOneLikeComment),new {likeCommentId=newLikeComment.Id},newLikeComment);
     }
 
-    [HttpDelete("{likeCommentObject}")]
-    public async Task<IActionResult> DeleteOneLikeComment(LikeComment likeComment) {
+    [HttpDelete("{likeCommentId}")]
+    public async Task<IActionResult> DeleteOneLikeComment(string likeCommentId) {
 
-        if(!_likeCommentService.LikeCommentIsCreated(likeComment)){
+        if(!_likeCommentService.LikeCommentIsCreated(likeCommentId)){
             return NotFound();
         }
 
-        await _likeCommentService.DeleteOneLikeCommentService(likeComment);
+        await _likeCommentService.DeleteOneLikeCommentService(likeCommentId);
         return Ok("Deleted the LikeComment");
 
     }

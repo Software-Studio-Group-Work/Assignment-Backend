@@ -25,25 +25,25 @@ public class LikePostController: ControllerBase {
 
     }
     [AllowAnonymous]
-    [HttpGet("{LikePostObject}")]
-    public async Task<ActionResult<LikePost?>> GetOneLikePost(LikePost likePost) {
-        return await _likePostService.GetOneLikePostService(likePost);
+    [HttpGet("{likePostId}")]
+    public async Task<ActionResult<LikePost?>> GetOneLikePost(string likePostId) {
+        return await _likePostService.GetOneLikePostService(likePostId);
 
     }
     [HttpPost]
     public async Task<IActionResult> CreateOneLikePost([FromBody] LikePost newLikePost) {
         await _likePostService.CreateOneLikePostService(newLikePost);
-        return CreatedAtAction(nameof(GetOneLikePost),newLikePost);
+        return CreatedAtAction(nameof(GetOneLikePost),new {likePostId=newLikePost.Id},newLikePost);
     }
 
-    [HttpDelete("{LikePostObject}")]
-    public async Task<IActionResult> DeleteOneLikePost(LikePost likePost) {
+    [HttpDelete("{likePostId}")]
+    public async Task<IActionResult> DeleteOneLikePost(string likePostId) {
 
-        if(!_likePostService.LikePostIsCreated(likePost)){
+        if(!_likePostService.LikePostIsCreated(likePostId)){
             return NotFound();
         }
 
-        await _likePostService.DeleteOneLikePostService(likePost);
+        await _likePostService.DeleteOneLikePostService(likePostId);
         return Ok("Deleted the LikePost");
 
     }

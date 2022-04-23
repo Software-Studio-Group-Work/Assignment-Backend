@@ -35,7 +35,7 @@ public class UserController: ControllerBase {
     [HttpPost]
     public async Task<IActionResult> Register([FromBody] User anonymous) {
         await _userService.CreateOneUserService(anonymous);
-        return CreatedAtAction(nameof(GetOneUser), new { userId = anonymous.Id }, anonymous.Id);
+        return CreatedAtAction(nameof(GetOneUser), new { userId = anonymous.Id }, anonymous);
     }
     [AllowAnonymous]
     [HttpPost]

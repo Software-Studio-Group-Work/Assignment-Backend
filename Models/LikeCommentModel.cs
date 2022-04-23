@@ -5,6 +5,10 @@ namespace Backend.Models;
 
 public class LikeComment
 {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }= ObjectId.GenerateNewId().ToString();
+    
     [Required(ErrorMessage = "userId is required.")]
     [BsonRepresentation(BsonType.ObjectId)]
     public string userId { get; set; } = null!;

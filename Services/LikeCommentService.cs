@@ -19,20 +19,20 @@ public class LikeCommentService{
     public async Task<List<LikeComment>> GetLikesOnCommentService(string commendId ){
         return await _likeCommentsCollection.Find(x=>x.commentId==commendId).ToListAsync();
     }
-    public async Task<LikeComment?> GetOneLikeCommentService(LikeComment likeComment ){
-        return await _likeCommentsCollection.Find(x=>(x.userId==likeComment.userId&&x.commentId==likeComment.commentId)).FirstOrDefaultAsync();
+    public async Task<LikeComment?> GetOneLikeCommentService(string likeCommentId ){
+        return await _likeCommentsCollection.Find(x=>x.Id==likeCommentId).FirstOrDefaultAsync();
     }
     public async Task CreateOneLikeCommentService(LikeComment likeComment) { 
         await _likeCommentsCollection.InsertOneAsync(likeComment);
         return;
     }
 
-    public async Task DeleteOneLikeCommentService(LikeComment likeComment) { 
-        await _likeCommentsCollection.DeleteOneAsync(x =>(x.userId==likeComment.userId&&x.commentId==likeComment.commentId));
+    public async Task DeleteOneLikeCommentService(string likeCommentId) { 
+        await _likeCommentsCollection.DeleteOneAsync(x=>x.Id==likeCommentId);
         return;
     }
-        public bool LikeCommentIsCreated(LikeComment likeComment){
-        var LikeComment = GetOneLikeCommentService(likeComment);
+        public bool LikeCommentIsCreated(string likeCommentId){
+        var LikeComment = GetOneLikeCommentService(likeCommentId);
 
         if(LikeComment is null){
             return false;
