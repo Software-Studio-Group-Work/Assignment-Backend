@@ -18,6 +18,7 @@ builder.Services.AddSingleton<CommentService>();
 builder.Services.AddSingleton<AnnouncementService>();
 builder.Services.AddSingleton<LikeCommentService>();
 builder.Services.AddSingleton<LikePostService>();
+builder.Services.AddSingleton<PlaceService>();
 
 builder.Services.AddControllers();
 builder.Services.AddAuthentication(options =>  

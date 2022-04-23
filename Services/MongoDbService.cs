@@ -18,6 +18,8 @@ public class MongoDbService
 
     private readonly IMongoCollection<LikePost> _likePostsCollection;
 
+    private readonly IMongoCollection<Place> _placesCollection;
+
     public MongoDbService(IOptions<MongoDbSettings> mongoDbSettings)
     {
         var mongoClient = new MongoClient(
@@ -43,6 +45,8 @@ public class MongoDbService
         
         _likePostsCollection = mongoDatabase.GetCollection<LikePost>(
             mongoDbSettings.Value.LikePostsCollectionName);
+        _placesCollection=mongoDatabase.GetCollection<Place>(
+            mongoDbSettings.Value.PlacesCollectionName);
 
     }
 
@@ -54,5 +58,7 @@ public class MongoDbService
     public IMongoCollection<Announcement> AnnouncementsCollection { get { return _announcementsCollection; } }
     public IMongoCollection<LikeComment> LikeCommentsCollection { get { return _likeCommentsCollection; } }
     public IMongoCollection<LikePost> LikePostsCollection { get { return _likePostsCollection; } }
+
+    public IMongoCollection<Place> PlacesCollection { get { return _placesCollection; } }
 
 }

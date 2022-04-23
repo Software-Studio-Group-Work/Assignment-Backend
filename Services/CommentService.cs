@@ -15,7 +15,7 @@ public class CommentService{
         return await _commentCollection.Find(_=>true).ToListAsync();
         
     }
-    public async Task<List<Comment>> GetPostCommentService(string postId) { 
+    public async Task<List<Comment>> GetCommentsByPostService(string postId) { 
         return await _commentCollection.Find(x=>x.postId==postId).ToListAsync();
         
     }

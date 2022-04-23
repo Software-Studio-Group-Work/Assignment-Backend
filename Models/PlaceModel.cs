@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations;
 namespace Backend.Models;
 
-public class Announcement
+public class Place
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -14,7 +14,7 @@ public class Announcement
 
     [Required(ErrorMessage = "title is required.")]  
     public string title { get; set; } = null!;
-
+    public string picture { get; set; } = null!;
     public string decription { get; set; } = null!;
 
 }

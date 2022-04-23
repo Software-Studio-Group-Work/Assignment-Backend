@@ -21,9 +21,9 @@ public class AnnouncementController: ControllerBase {
     }
     [AllowAnonymous]
     [HttpGet("{adminId}")]
-    public async Task<List<Announcement>> GetAdminAnnouncement(string adminId) {
+    public async Task<List<Announcement>> GetAnnouncementsByAdmin(string adminId) {
 
-        return await _announcementService.GetAdminAnnouncementService(adminId);
+        return await _announcementService.GetAnnouncementsByAdminService(adminId);
     }
     [AllowAnonymous]
     [HttpGet("{announcementId}")]

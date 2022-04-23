@@ -20,6 +20,18 @@ public class UserController: ControllerBase {
         return await _userService.GetAllUserService();
     }
     [AllowAnonymous]
+    [HttpGet("{religion}")]
+    public async Task<List<User>> GetUserByReligion(string religion) {
+        return await _userService.GetUserByReligionService(religion);
+    }
+    [AllowAnonymous]
+    [HttpGet("{token}")]
+    public async Task<ActionResult<User?>> GetUserByToken(string token) {
+
+        return await _userService.GetUserByTokenService(token);
+
+    }
+    [AllowAnonymous]
     [HttpGet("{userId}")]
     public async Task<ActionResult<User?>> GetOneUser(string userId) {
 

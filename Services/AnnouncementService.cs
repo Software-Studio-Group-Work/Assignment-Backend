@@ -16,7 +16,7 @@ public class AnnouncementService{
         return await _announcementsCollection.Find(_=>true).ToListAsync();
         
     }
-    public async Task<List<Announcement>> GetAdminAnnouncementService(string adminId) { 
+    public async Task<List<Announcement>> GetAnnouncementsByAdminService(string adminId) { 
         return await _announcementsCollection.Find(x=>x.adminId==adminId).ToListAsync();
         
     }

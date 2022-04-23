@@ -22,9 +22,14 @@ public class PostController: ControllerBase {
     }
     [AllowAnonymous]
     [HttpGet("{userId}")]
-    public async Task<List<Post>> GetUserPost(string userId) {
+    public async Task<List<Post>> GetPostsByUser(string userId) {
 
-        return await _postService.GetUserPostService(userId);
+        return await _postService.GetPostsByUserService(userId);
+    }
+    [AllowAnonymous]
+    [HttpGet("{religion}")]
+    public async Task<List<Post>> GetPostsByReligion(string religion) {
+        return await _postService.GetPostsByReligionService(religion);
     }
     [AllowAnonymous]
     [HttpGet("{postId}")]
@@ -43,11 +48,7 @@ public class PostController: ControllerBase {
         if(!_userService.userIsCreated(newPost.userId)){
             return NotFound();
         }
-        Console.Write("1 ");
-        Console.WriteLine(newPost.Id);
         await _postService.CreateOnePostService(newPost);
-        Console.Write("2 ");
-        Console.WriteLine(newPost.Id);
         return CreatedAtAction(nameof(GetOnePost), new { postId = newPost.Id }, newPost);
     }
     [HttpPut("{postId}")]

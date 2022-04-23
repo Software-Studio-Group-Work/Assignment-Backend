@@ -16,8 +16,12 @@ public class PostService{
         return await _postCollection.Find(_=>true).ToListAsync();
         
     }
-    public async Task<List<Post>> GetUserPostService(string userId) { 
+    public async Task<List<Post>> GetPostsByUserService(string userId) { 
         return await _postCollection.Find(x=>x.userId==userId).ToListAsync();
+        
+    }
+        public async Task<List<Post>> GetPostsByReligionService(string religion) { 
+        return await _postCollection.Find(x=>x.religion==religion).ToListAsync();
         
     }
     public async Task<Post?> GetOnePostService(string postId){

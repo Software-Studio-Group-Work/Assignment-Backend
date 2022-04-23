@@ -20,9 +20,9 @@ public class CommentController: ControllerBase {
     }
     [AllowAnonymous]
     [HttpGet("{postId}")]
-    public async Task<List<Comment>> GetPostComment(string postId) {
+    public async Task<List<Comment>> GetCommentsByPost(string postId) {
 
-        return await _commentService.GetPostCommentService(postId);
+        return await _commentService.GetCommentsByPostService(postId);
     }
     [AllowAnonymous]
     [HttpGet("{commentId}")]

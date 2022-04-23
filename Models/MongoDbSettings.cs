@@ -14,4 +14,5 @@ public class MongoDbSettings
     public string AnnouncementsCollectionName { get; set; } = null!;
     public string LikeCommentsCollectionName { get; set; } = null!;
     public string LikePostsCollectionName { get; set; } = null!;
+    public string PlacesCollectionName { get; set; } = null!;
 }

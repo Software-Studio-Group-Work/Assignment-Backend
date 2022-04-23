@@ -20,6 +20,9 @@ public class UserService{
         return await _userCollection.Find(_=>true).ToListAsync();
         
     }
+    public async Task<List<User>> GetUserByReligionService(string religion){
+        return await _userCollection.Find(x=>x.religion==religion).ToListAsync();
+    }
     public async Task<User?> GetOneUserService(string userId){
         return await _userCollection.Find(x=>x.Id==userId).FirstOrDefaultAsync();
     }
@@ -47,8 +50,21 @@ public class UserService{
         return true;
     }
 
-    public string AuthenticationService(string username,string password){
-        User user= _userCollection.Find(x=>x.username==username&&x.password==password).FirstOrDefault();
+    public async Task<User?> GetUserByTokenService(string token){
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadToken(token);
+        var tokenS = jsonToken as JwtSecurityToken;
+        if(tokenS==null){
+            return null;
+        }
+        var username = tokenS.Claims.First(claim => claim.Type == "username").Value;
+        var password = tokenS.Claims.First(claim => claim.Type == "password").Value;
+
+        return await GetOneUserService(username,password);
+    }
+
+        public string AuthenticationService(string username,string password){
+        User user=  _userCollection.Find(x=>x.username==username&&x.password==password).FirstOrDefault();
         if(user==null){
             return "";
         }
@@ -57,6 +73,7 @@ public class UserService{
         var tokenDescriptor= new SecurityTokenDescriptor(){
             Subject =new ClaimsIdentity(new Claim[]{
                 new Claim("username",user.username),
+                new Claim("password",user.password),
                 new Claim(ClaimTypes.Role,user.role),
             }),
             Expires=DateTime.UtcNow.AddHours(6),
