@@ -57,11 +57,40 @@ public class UserService{
         if(tokenS==null){
             return null;
         }
-        var username = tokenS.Claims.First(claim => claim.Type == "username").Value;
-        var password = tokenS.Claims.First(claim => claim.Type == "password").Value;
-
-        return await GetOneUserService(username,password);
+        var userId =  ValidateJwtToken(token);
+        if(userId==""){
+            return null;
+        }
+        return await GetOneUserService(userId);
     }
+    public string ValidateJwtToken(string token)
+{
+    var tokenHandler = new JwtSecurityTokenHandler();
+    var tokenKey = Encoding.ASCII.GetBytes(this.key);
+    try
+    {
+        tokenHandler.ValidateToken(token, new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(tokenKey),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
+            ClockSkew = TimeSpan.Zero
+        }, out SecurityToken validatedToken);
+
+        var jwtToken = (JwtSecurityToken)validatedToken;
+        var accountId = jwtToken.Claims.First(x => x.Type == "userId").Value;
+
+        // return account id from JWT token if validation successful
+        return accountId;
+    }
+    catch
+    {
+        // return null if validation fails
+        return "";
+    }
+}
 
         public string AuthenticationService(string username,string password){
         User user=  _userCollection.Find(x=>x.username==username&&x.password==password).FirstOrDefault();
@@ -69,11 +98,10 @@ public class UserService{
             return "";
         }
         var tokenHandler=new JwtSecurityTokenHandler();
-        var tokenKey=Encoding.ASCII.GetBytes(key);
+        var tokenKey=Encoding.ASCII.GetBytes(this.key);
         var tokenDescriptor= new SecurityTokenDescriptor(){
             Subject =new ClaimsIdentity(new Claim[]{
-                new Claim("username",user.username),
-                new Claim("password",user.password),
+                new Claim("userId",user.Id),
                 new Claim(ClaimTypes.Role,user.role),
             }),
             Expires=DateTime.UtcNow.AddHours(6),

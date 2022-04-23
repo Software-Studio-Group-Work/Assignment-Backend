@@ -27,8 +27,11 @@ public class UserController: ControllerBase {
     [AllowAnonymous]
     [HttpGet("{token}")]
     public async Task<ActionResult<User?>> GetUserByToken(string token) {
-
-        return await _userService.GetUserByTokenService(token);
+        var user=await _userService.GetUserByTokenService(token);
+        if(user==null){
+        return Unauthorized();
+        }
+        return user;
 
     }
     [AllowAnonymous]
