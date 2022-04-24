@@ -50,7 +50,7 @@ public class UserController: ControllerBase {
     [HttpPost]
     public async Task<IActionResult> Register([FromBody] User anonymous) {
         if(_userService.usernameExists(anonymous.username)){
-            return BadRequest("Username already exists");
+            return BadRequest("The username already exists");
         }
         await _userService.CreateOneUserService(anonymous);
         return CreatedAtAction(nameof(GetOneUser), new { userId = anonymous.Id }, anonymous);
@@ -60,7 +60,7 @@ public class UserController: ControllerBase {
     public IActionResult Login([FromBody]Login userLogin){
         var token = _userService.AuthenticationService(userLogin.username,userLogin.password);
         if(token=="")
-            return Unauthorized();
+            return Unauthorized("The username or password is incorrect");
 
         var user =_userService.GetOneUserService(userLogin.username,userLogin.password);
 
