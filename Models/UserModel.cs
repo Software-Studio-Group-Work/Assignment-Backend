@@ -21,9 +21,7 @@ public class User
 
     public string picture { get; set; } = "";
     public string religion { get; set; } = null!;
-
-    [Required(ErrorMessage = "role is required.")]
-    public string role { get; set; } = null!;
+    public string role { get; set; } = "user";
     public bool isBan { get; set; } = false;
 
 

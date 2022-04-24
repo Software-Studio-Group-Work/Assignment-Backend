@@ -49,6 +49,10 @@ public class UserService{
         }
         return true;
     }
+    public bool usernameExists(string username){
+        bool exists = _userCollection.Find(_ => _.username== username).Any();
+        return exists;
+    }
 
     public async Task<User?> GetUserByTokenService(string token){
         var handler = new JwtSecurityTokenHandler();

@@ -49,6 +49,9 @@ public class UserController: ControllerBase {
     [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Register([FromBody] User anonymous) {
+        if(_userService.usernameExists(anonymous.username)){
+            return BadRequest("Username already exists");
+        }
         await _userService.CreateOneUserService(anonymous);
         return CreatedAtAction(nameof(GetOneUser), new { userId = anonymous.Id }, anonymous);
     }
