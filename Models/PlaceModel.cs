@@ -14,9 +14,13 @@ public class Place
 
     [Required(ErrorMessage = "title is required.")]  
     public string title { get; set; } = null!;
-    public string picture { get; set; } = null!;
-    public string decription { get; set; } = null!;
 
+    public string religion { get; set; } = null!;
+    public string picture { get; set; } = "";
+    public string decription { get; set; } = null!;
     public string link { get; set; } = null!;
+
+
+
 
 }

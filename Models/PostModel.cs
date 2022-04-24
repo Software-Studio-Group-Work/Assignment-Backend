@@ -18,7 +18,7 @@ public class Post
 
     public string description { get; set; } = null!;
 
-    public string picture { get; set; } = null!;
+    public string picture { get; set; } = "";
     public string religion { get; set; } = null!;
     public bool isHide { get; set; } =false;
 
