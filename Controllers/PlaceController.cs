@@ -9,9 +9,10 @@ namespace Backend.Controllers;
 [Route("api/[controller]/[action]")]
 public class PlaceController: ControllerBase {
     private readonly PlaceService _placeService;
-    public PlaceController(PlaceService PlaceService) {
+    private readonly UserService _userService;
+    public PlaceController(PlaceService PlaceService,UserService userService) {
         _placeService = PlaceService;
-
+        _userService =userService;
     }
 
     [AllowAnonymous]
@@ -22,25 +23,32 @@ public class PlaceController: ControllerBase {
     [AllowAnonymous]
     [HttpGet("{adminId}")]
     public async Task<List<Place>> GetPlacesByAdmin(string adminId) {
-
         return await _placeService.GetPlacesByAdminService(adminId);
     }
     [AllowAnonymous]
     [HttpGet("{placeId}")]
     public async Task<ActionResult<Place?>> GetOnePlace(string placeId) {
+        if(!_placeService.placeIsCreated(placeId)){
+            return NotFound();
+        }
         return await _placeService.GetOnePlaceService(placeId);
 
     }
     [Authorize(Roles = "admin")]
     [HttpPost]
     public async Task<IActionResult> CreateOnePlace([FromBody] Place newPlace) {
+        if(!_userService.userIdExists(newPlace.adminId)){
+            return NotFound("Can't create the place.The admin doesn't exist.");
+        }
         await _placeService.CreateOnePlaceService(newPlace);
         return CreatedAtAction(nameof(GetOnePlace), new { placeId = newPlace.Id }, newPlace);
     }
     [Authorize(Roles = "admin")]
     [HttpPut("{placeId}")]
     public async Task<IActionResult> UpdateOnePlace(string placeId, [FromBody] Place updatedPlace) {
-
+        if(!_placeService.placeIsCreated(placeId)){
+            return NotFound();
+        }
         var Place =await _placeService.GetOnePlaceService(placeId);
 
         if(Place!=null){
@@ -55,7 +63,7 @@ public class PlaceController: ControllerBase {
     [HttpDelete("{placeId}")]
     public async Task<IActionResult> DeleteOnePlace(string placeId) {
 
-        if(!_placeService.PlaceIsCreated(placeId)){
+        if(!_placeService.placeIsCreated(placeId)){
             return NotFound();
         }
 

@@ -30,13 +30,9 @@ public class LikePostService{
         await _likePostsCollection.DeleteOneAsync(x=>x.Id==likePostId);
         return;
     }
-    public bool LikePostIsCreated(string likePostId){
-        var LikePost = GetOneLikePostService(likePostId);
-
-        if(LikePost is null){
-            return false;
-        }
-        return true;
+    public bool likePostIsCreated(string likePostId){
+         bool exists = _likePostsCollection.Find(_ => _.Id== likePostId).Any();
+        return exists;
     }
 
 }

@@ -40,12 +40,8 @@ public class PostService{
         return;
     }
         public bool postIsCreated(string postId){
-        var post = GetOnePostService(postId);
-
-        if(post is null){
-            return false;
-        }
-        return true;
+        bool exists = _postCollection.Find(_ => _.Id== postId).Any();
+        return exists;
     }
 
 }

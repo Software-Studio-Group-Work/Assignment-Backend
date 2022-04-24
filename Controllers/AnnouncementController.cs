@@ -8,9 +8,11 @@ namespace Backend.Controllers;
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class AnnouncementController: ControllerBase {
+        private readonly UserService _userService;
     private readonly AnnouncementService _announcementService;
-    public AnnouncementController(AnnouncementService announcementService) {
+    public AnnouncementController(AnnouncementService announcementService,UserService userService) {
         _announcementService = announcementService;
+        _userService=userService;
 
     }
 
@@ -28,18 +30,29 @@ public class AnnouncementController: ControllerBase {
     [AllowAnonymous]
     [HttpGet("{announcementId}")]
     public async Task<ActionResult<Announcement?>> GetOneAnnouncement(string announcementId) {
+                if(!_announcementService.announcementIsCreated(announcementId)){
+            return NotFound();
+        }
+
         return await _announcementService.GetOneAnnouncementService(announcementId);
 
     }
     [Authorize(Roles = "admin")]
     [HttpPost]
     public async Task<IActionResult> CreateOneAnnouncement([FromBody] Announcement newAnnouncement) {
+        if(!_userService.userIdExists(newAnnouncement.adminId)){
+            return NotFound("Can't create the announcement.The admin doesn't exist.");
+        }
         await _announcementService.CreateOneAnnouncementService(newAnnouncement);
         return CreatedAtAction(nameof(GetOneAnnouncement), new { announcementId = newAnnouncement.Id }, newAnnouncement);
     }
     [Authorize(Roles = "admin")]
     [HttpPut("{announcementId}")]
     public async Task<IActionResult> UpdateOneAnnouncement(string announcementId, [FromBody] Announcement updatedAnnouncement) {
+
+        if(!_announcementService.announcementIsCreated(announcementId)){
+            return NotFound();
+        }
 
         var Announcement =await _announcementService.GetOneAnnouncementService(announcementId);
 
@@ -55,7 +68,7 @@ public class AnnouncementController: ControllerBase {
     [HttpDelete("{announcementId}")]
     public async Task<IActionResult> DeleteOneAnnouncement(string announcementId) {
 
-        if(!_announcementService.AnnouncementIsCreated(announcementId)){
+        if(!_announcementService.announcementIsCreated(announcementId)){
             return NotFound();
         }
 

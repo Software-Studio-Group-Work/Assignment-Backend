@@ -39,8 +39,8 @@ public class UserController: ControllerBase {
     public async Task<ActionResult<User?>> GetOneUser(string userId) {
 
 
-        if(!_userService.userIsCreated(userId)){
-            return NotFound();
+        if(!_userService.userIdExists(userId)){
+            return NotFound("The user doesn't exist.");
         }
 
         return await _userService.GetOneUserService(userId);
@@ -70,6 +70,9 @@ public class UserController: ControllerBase {
 
     [HttpPut("{userId}")]
     public async Task<IActionResult> UpdateOneUser(string userId, [FromBody] User updatedUser) {
+        if(!_userService.userIdExists(userId)){
+            return NotFound("The user doesn't exist.");
+        }
         var user =await _userService.GetOneUserService(userId);
 
         if(user!=null){
@@ -83,8 +86,8 @@ public class UserController: ControllerBase {
     }
     [HttpDelete("{userId}")]
     public async Task<IActionResult> DeleteOneUser(string userId) {
-        if(!_userService.userIsCreated(userId)){
-            return NotFound();
+        if(!_userService.userIdExists(userId)){
+            return NotFound("The user doesn't exist.");
         }
 
         await _userService.DeleteOneUserService(userId);

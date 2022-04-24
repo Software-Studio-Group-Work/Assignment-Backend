@@ -31,13 +31,9 @@ public class LikeCommentService{
         await _likeCommentsCollection.DeleteOneAsync(x=>x.Id==likeCommentId);
         return;
     }
-        public bool LikeCommentIsCreated(string likeCommentId){
-        var LikeComment = GetOneLikeCommentService(likeCommentId);
-
-        if(LikeComment is null){
-            return false;
-        }
-        return true;
+        public bool likeCommentIsCreated(string likeCommentId){
+         bool exists = _likeCommentsCollection.Find(_ => _.Id== likeCommentId).Any();
+        return exists;
     }
 
 }

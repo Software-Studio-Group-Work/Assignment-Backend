@@ -35,14 +35,9 @@ public class PlaceService{
         await _placesCollection.DeleteOneAsync(x => x.Id == placeId);
         return;
     }
-        public bool PlaceIsCreated(string PlaceId){
-        var Place = GetOnePlaceService(PlaceId);
-
-        if(Place is null){
-
-            return false;
-        }
-        return true;
+        public bool placeIsCreated(string placeId){
+         bool exists = _placesCollection.Find(_ => _.Id== placeId).Any();
+        return exists;
     }
 
 }

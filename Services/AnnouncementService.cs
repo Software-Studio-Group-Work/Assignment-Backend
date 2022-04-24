@@ -35,14 +35,9 @@ public class AnnouncementService{
         await _announcementsCollection.DeleteOneAsync(x => x.Id == announcementId);
         return;
     }
-        public bool AnnouncementIsCreated(string announcementId){
-        var announcement = GetOneAnnouncementService(announcementId);
-
-        if(announcement is null){
-
-            return false;
-        }
-        return true;
+        public bool announcementIsCreated(string announcementId){
+         bool exists = _announcementsCollection.Find(_ => _.Id== announcementId).Any();
+        return exists;
     }
 
 }

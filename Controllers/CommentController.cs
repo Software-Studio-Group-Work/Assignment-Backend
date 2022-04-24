@@ -9,9 +9,12 @@ namespace Backend.Controllers;
 [Route("api/[controller]/[action]")]
 public class CommentController: ControllerBase {
     private readonly CommentService _commentService;
-    public CommentController(CommentService commentService) {
+        private readonly UserService _userService;
+            private readonly PostService _postService;
+    public CommentController(CommentService commentService,UserService userService,PostService postService) {
         _commentService = commentService;
-
+        _postService = postService;
+        _userService =userService;
     }
     [AllowAnonymous]
     [HttpGet]
@@ -36,11 +39,17 @@ public class CommentController: ControllerBase {
     }
     [HttpPost]
     public async Task<IActionResult> CreateOneComment([FromBody] Comment newComment) {
+        if(!_userService.userIdExists(newComment.userId)||!_postService.postIsCreated(newComment.postId)){
+             return NotFound("The post or user doesn't exist.");
+        }
         await _commentService.CreateOneCommentService(newComment);
         return CreatedAtAction(nameof(GetOneComment), new { commentId = newComment.Id }, newComment);
     }
     [HttpPut("{commentId}")]
     public async Task<IActionResult> UpdateOneComment(string commentId, [FromBody] Comment updatedComment) {
+        if(!_commentService.commentIsCreated(commentId)){
+            return NotFound();
+        }
        
         var comment =await _commentService.GetOneCommentService(commentId);
 

@@ -23,7 +23,6 @@ public class PostController: ControllerBase {
     [AllowAnonymous]
     [HttpGet("{userId}")]
     public async Task<List<Post>> GetPostsByUser(string userId) {
-
         return await _postService.GetPostsByUserService(userId);
     }
     [AllowAnonymous]
@@ -45,16 +44,17 @@ public class PostController: ControllerBase {
     [HttpPost]
     public async Task<IActionResult> CreateOnePost([FromBody] Post newPost) {
 
-        if(!_userService.userIsCreated(newPost.userId)){
-            return NotFound();
+        if(!_userService.userIdExists(newPost.userId)){
+            return NotFound("Can't create the post.The user doesn't exist.");
         }
         await _postService.CreateOnePostService(newPost);
         return CreatedAtAction(nameof(GetOnePost), new { postId = newPost.Id }, newPost);
     }
     [HttpPut("{postId}")]
     public async Task<IActionResult> UpdateOnePost(string postId, [FromBody] Post updatedPost) {
-       
-    
+        if(!_postService.postIsCreated(postId)){
+            return NotFound();
+        }
         var post =await _postService.GetOnePostService(postId);
         if(post!=null){
         updatedPost.Id=post.Id;

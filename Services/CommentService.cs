@@ -35,12 +35,8 @@ public class CommentService{
         return;
     }
         public bool commentIsCreated(string commentId){
-        var comment = GetOneCommentService(commentId);
-
-        if(comment is null){
-            return false;
-        }
-        return true;
+         bool exists = _commentCollection.Find(_ => _.Id== commentId).Any();
+        return exists;
     }
 
 }

@@ -42,12 +42,9 @@ public class UserService{
         return;
     }
 
-    public bool userIsCreated(string userId){
-        var User = GetOneUserService(userId);
-        if(User is null){
-            return false;
-        }
-        return true;
+    public bool userIdExists(string userId){
+        bool exists = _userCollection.Find(_ => _.Id== userId).Any();
+        return exists;
     }
     public bool usernameExists(string username){
         bool exists = _userCollection.Find(_ => _.username== username).Any();
