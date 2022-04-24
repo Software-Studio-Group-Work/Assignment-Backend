@@ -15,6 +15,6 @@ public class Announcement
     [Required(ErrorMessage = "title is required.")]  
     public string title { get; set; } = null!;
 
-    public string decription { get; set; } = null!;
+    public string description { get; set; } = null!;
 
 }
