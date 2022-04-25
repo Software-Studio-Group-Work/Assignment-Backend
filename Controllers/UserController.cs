@@ -25,11 +25,17 @@ public class UserController: ControllerBase {
         return await _userService.GetUserByReligionService(religion);
     }
     [AllowAnonymous]
-    [HttpGet("{token}")]
-    public async Task<ActionResult<User?>> GetUserByToken(string token) {
-        var user=await _userService.GetUserByTokenService(token);
+    [HttpGet]
+    public async Task<ActionResult<User?>> GetUserByToken() {
+        Request.Headers.TryGetValue("Authorization", out var token);
+        if(token==default(String)){
+            return BadRequest("The token is missing.");
+        }
+        string tempToken=token;
+        string newToken = tempToken.Replace("Bearer ","");
+        var user=await _userService.GetUserByTokenService(newToken);
         if(user==null){
-        return Unauthorized();
+        return Unauthorized("The token is invalid.");
         }
         return user;
 
