@@ -20,6 +20,6 @@ public class Comment
     [Required(ErrorMessage = "comment is required.")]
     public string comment { get; set; } = null!;
 
-    public string picture { get; set; } = null!;
+    public string picture { get; set; } = "";
     public bool isHide { get; set; }=false;
 }
