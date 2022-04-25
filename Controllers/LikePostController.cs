@@ -42,7 +42,7 @@ public class LikePostController: ControllerBase {
              return NotFound("The post or user doesn't exist.");
         }
         if(_likePostService.likePostIsCreated(newLikePost.userId,newLikePost.postId)){
-            return BadRequest("The user already liked this post.");
+            return BadRequest("The user has already liked this post.");
         }
         await _likePostService.CreateOneLikePostService(newLikePost);
         return CreatedAtAction(nameof(GetOneLikePost),new {likePostId=newLikePost.Id},newLikePost);

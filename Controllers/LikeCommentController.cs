@@ -43,7 +43,7 @@ public class LikeCommentController: ControllerBase {
              return NotFound("The comment or user doesn't exist.");
         }
         if(_likeCommentService.likeCommentIsCreated(newLikeComment.userId,newLikeComment.commentId)){
-            return BadRequest("The user already liked this comment.");
+            return BadRequest("The user has already liked this comment.");
         }
         await _likeCommentService.CreateOneLikeCommentService(newLikeComment);
         return CreatedAtAction(nameof(GetOneLikeComment),new {likeCommentId=newLikeComment.Id},newLikeComment);
