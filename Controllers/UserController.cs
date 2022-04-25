@@ -22,18 +22,15 @@ public class UserController: ControllerBase {
     [AllowAnonymous]
     [HttpGet("{religion}")]
     public async Task<List<User>> GetUserByReligion(string religion) {
+        if(religion.Equals("all")){
+            return await _userService.GetAllUserService();
+        }
         return await _userService.GetUserByReligionService(religion);
     }
     [AllowAnonymous]
-    [HttpGet]
-    public async Task<ActionResult<User?>> GetUserByToken() {
-        Request.Headers.TryGetValue("Authorization", out var token);
-        if(token==default(String)){
-            return BadRequest("The token is missing.");
-        }
-        string tempToken=token;
-        string newToken = tempToken.Replace("Bearer ","");
-        var user=await _userService.GetUserByTokenService(newToken);
+    [HttpGet("{token}")]
+    public async Task<ActionResult<User?>> GetUserByToken(string token) {
+        var user=await _userService.GetUserByTokenService(token);
         if(user==null){
         return Unauthorized("The token is invalid.");
         }
