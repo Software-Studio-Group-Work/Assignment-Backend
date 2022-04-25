@@ -36,7 +36,13 @@ public class PostService{
         return;
     }
     public async Task DeleteOnePostService(string postId) { 
+        
         await _postCollection.DeleteOneAsync(x => x.Id == postId);
+        return;
+    }
+    public async Task DeletePostByUserService(string userId) { 
+        FilterDefinition<Post> filteredUser = Builders<Post>.Filter.Eq("userId", userId);
+        await _postCollection.DeleteManyAsync(filteredUser);
         return;
     }
         public bool postIsCreated(string postId){

@@ -35,6 +35,11 @@ public class AnnouncementService{
         await _announcementsCollection.DeleteOneAsync(x => x.Id == announcementId);
         return;
     }
+        public async Task DeleteAnnouncementByUserService(string userId) { 
+        FilterDefinition<Announcement> filter= Builders<Announcement>.Filter.Eq("userId", userId);
+        await _announcementsCollection.DeleteManyAsync(filter);
+        return;
+    }
         public bool announcementIsCreated(string announcementId){
          bool exists = _announcementsCollection.Find(_ => _.Id== announcementId).Any();
         return exists;

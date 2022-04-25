@@ -35,6 +35,11 @@ public class PlaceService{
         await _placesCollection.DeleteOneAsync(x => x.Id == placeId);
         return;
     }
+        public async Task DeletePlaceByAdminService(string adminId) { 
+        FilterDefinition<Place> filter= Builders<Place>.Filter.Eq("adminId", adminId);
+        await _placesCollection.DeleteManyAsync(filter);
+        return;
+    }
         public bool placeIsCreated(string placeId){
          bool exists = _placesCollection.Find(_ => _.Id== placeId).Any();
         return exists;

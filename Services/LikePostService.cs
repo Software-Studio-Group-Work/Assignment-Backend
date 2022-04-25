@@ -30,6 +30,11 @@ public class LikePostService{
         await _likePostsCollection.DeleteOneAsync(x=>x.Id==likePostId);
         return;
     }
+        public async Task DeleteLikePostByUserService(string userId) { 
+        FilterDefinition<LikePost> filter= Builders<LikePost>.Filter.Eq("userId", userId);
+        await _likePostsCollection.DeleteManyAsync(filter);
+        return;
+    }
     public bool likePostIsCreated(string likePostId){
          bool exists = _likePostsCollection.Find(_ => _.Id== likePostId).Any();
         return exists;

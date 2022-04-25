@@ -9,10 +9,21 @@ namespace Backend.Controllers;
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class UserController: ControllerBase {
-    
+    private readonly LikePostService _likePostService;
+    private readonly PlaceService _placeService;
+    private readonly PostService _postService;
     private readonly UserService _userService;
-    public UserController(UserService UserService) {
-        _userService = UserService;
+    private readonly LikeCommentService _likeCommentService;
+    private readonly CommentService _commentService;
+    private readonly AnnouncementService _announcementService;
+    public UserController(UserService userService,LikePostService likePostService,PlaceService placeService,PostService postService,LikeCommentService likeCommentService,AnnouncementService announcementService,CommentService commentService) {
+        _userService = userService;
+        _likePostService=likePostService;
+        _placeService=placeService;
+        _postService=postService;
+        _likeCommentService=likeCommentService;
+        _announcementService=announcementService;
+        _commentService=commentService;
     }
     [AllowAnonymous]
     [HttpGet]
@@ -92,7 +103,13 @@ public class UserController: ControllerBase {
         if(!_userService.userIdExists(userId)){
             return NotFound("The user doesn't exist.");
         }
-
+        
+        await _announcementService.DeleteAnnouncementByUserService(userId);
+        await _commentService.DeleteCommentByUserService(userId);
+        await _likeCommentService.DeleteLikeCommentByUserService(userId);
+        await _likePostService.DeleteLikePostByUserService(userId);
+        await _placeService.DeletePlaceByAdminService(userId);
+        await _postService.DeletePostByUserService(userId);
         await _userService.DeleteOneUserService(userId);
         return Ok("Deleted the user");
 
