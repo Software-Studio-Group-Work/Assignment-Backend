@@ -11,9 +11,15 @@ public class PostController: ControllerBase {
     
     private readonly PostService _postService;
     private readonly UserService _userService;
-    public PostController(PostService postService,UserService userService) {
+    private readonly LikePostService _likePostService;
+    private readonly CommentService _commentService;
+    private readonly LikeCommentService _likeCommentService;
+    public PostController(PostService postService,UserService userService,LikePostService likePostService,LikeCommentService likeCommentService,CommentService commentService) {
         _postService = postService;
         _userService =userService;
+        _likePostService=likePostService;
+        _commentService=commentService;
+        _likeCommentService=likeCommentService;
     }
     [AllowAnonymous]
     [HttpGet]
@@ -74,7 +80,13 @@ public class PostController: ControllerBase {
         if(!_postService.postIsCreated(postId)){
             return NotFound();
         }
-
+        List<Comment> comments=await _commentService.GetCommentsByPostService(postId);
+        foreach (var comment in comments)
+        {
+            await _likeCommentService.DeleteLikeCommentByCommentService(comment.Id);
+        }
+        await _commentService.DeleteCommentByPostService(postId);
+        await _likePostService.DeleteLikePostByPostService(postId);
         await _postService.DeleteOnePostService(postId);
         return Ok("Deleted the post");
 

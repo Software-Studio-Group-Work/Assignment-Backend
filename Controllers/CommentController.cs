@@ -9,12 +9,14 @@ namespace Backend.Controllers;
 [Route("api/[controller]/[action]")]
 public class CommentController: ControllerBase {
     private readonly CommentService _commentService;
-        private readonly UserService _userService;
-            private readonly PostService _postService;
-    public CommentController(CommentService commentService,UserService userService,PostService postService) {
+    private readonly UserService _userService;
+    private readonly PostService _postService;
+    private readonly LikeCommentService _likeCommentService;    
+    public CommentController(CommentService commentService,UserService userService,PostService postService,LikeCommentService likeCommentService) {
         _commentService = commentService;
         _postService = postService;
         _userService =userService;
+        _likeCommentService = likeCommentService;
     }
     [AllowAnonymous]
     [HttpGet]
@@ -68,7 +70,7 @@ public class CommentController: ControllerBase {
         if(!_commentService.commentIsCreated(commentId)){
             return NotFound();
         }
-
+        await _likeCommentService.DeleteLikeCommentByCommentService(commentId);
         await _commentService.DeleteOneCommentService(commentId);
         return Ok("Deleted the Comment");
 

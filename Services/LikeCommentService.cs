@@ -37,6 +37,13 @@ public class LikeCommentService{
         await _likeCommentsCollection.DeleteManyAsync(filter);
         return;
     }
+
+        public async Task DeleteLikeCommentByCommentService(string commentId) { 
+        FilterDefinition<LikeComment> filter= Builders<LikeComment>.Filter.Eq("commentId", commentId);
+        await _likeCommentsCollection.DeleteManyAsync(filter);
+        return;
+    }
+
         public bool likeCommentIsCreated(string likeCommentId){
          bool exists = _likeCommentsCollection.Find(_ => _.Id== likeCommentId).Any();
         return exists;

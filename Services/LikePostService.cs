@@ -30,8 +30,15 @@ public class LikePostService{
         await _likePostsCollection.DeleteOneAsync(x=>x.Id==likePostId);
         return;
     }
+
+
         public async Task DeleteLikePostByUserService(string userId) { 
         FilterDefinition<LikePost> filter= Builders<LikePost>.Filter.Eq("userId", userId);
+        await _likePostsCollection.DeleteManyAsync(filter);
+        return;
+    }
+        public async Task DeleteLikePostByPostService(string postId) { 
+        FilterDefinition<LikePost> filter= Builders<LikePost>.Filter.Eq("postId", postId);
         await _likePostsCollection.DeleteManyAsync(filter);
         return;
     }

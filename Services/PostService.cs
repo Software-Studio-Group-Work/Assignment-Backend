@@ -7,9 +7,7 @@ namespace Backend.Services;
 
 public class PostService{
         private readonly IMongoCollection<Post> _postCollection;
-        
     public PostService(MongoDbService mongoDbService) {
-
         _postCollection = mongoDbService.PostsCollection;
     }
     public async Task<List<Post>> GetAllPostService() { 
@@ -36,7 +34,6 @@ public class PostService{
         return;
     }
     public async Task DeleteOnePostService(string postId) { 
-        
         await _postCollection.DeleteOneAsync(x => x.Id == postId);
         return;
     }

@@ -39,6 +39,11 @@ public class CommentService{
         await _commentCollection.DeleteManyAsync(filter);
         return;
     }
+            public async Task DeleteCommentByPostService(string postId) { 
+        FilterDefinition<Comment> filter= Builders<Comment>.Filter.Eq("postId", postId);
+        await _commentCollection.DeleteManyAsync(filter);
+        return;
+            }
         public bool commentIsCreated(string commentId){
          bool exists = _commentCollection.Find(_ => _.Id== commentId).Any();
         return exists;
