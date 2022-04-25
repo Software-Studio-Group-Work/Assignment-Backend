@@ -28,6 +28,9 @@ public class PostController: ControllerBase {
     [AllowAnonymous]
     [HttpGet("{religion}")]
     public async Task<List<Post>> GetPostsByReligion(string religion) {
+        if(religion.Equals("all")){
+            return await _postService.GetAllPostService();
+        }
         return await _postService.GetPostsByReligionService(religion);
     }
     [AllowAnonymous]
