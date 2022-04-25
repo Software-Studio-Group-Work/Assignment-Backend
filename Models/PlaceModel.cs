@@ -17,7 +17,7 @@ public class Place
 
     public string religion { get; set; } = null!;
     public string picture { get; set; } = "";
-    public string decription { get; set; } = null!;
+    public string description { get; set; } = null!;
     public string link { get; set; } = null!;
 
 
