@@ -39,8 +39,11 @@ public class LikeCommentController: ControllerBase {
     }
     [HttpPost]
     public async Task<IActionResult> CreateOneLikeComment([FromBody] LikeComment newLikeComment) {
-               if(!_userService.userIdExists(newLikeComment.userId)||!_commentService.commentIsCreated(newLikeComment.commentId)){
+        if(!_userService.userIdExists(newLikeComment.userId)||!_commentService.commentIsCreated(newLikeComment.commentId)){
              return NotFound("The comment or user doesn't exist.");
+        }
+        if(_likeCommentService.likeCommentIsCreated(newLikeComment.userId,newLikeComment.commentId)){
+            return BadRequest("The user already liked this comment.");
         }
         await _likeCommentService.CreateOneLikeCommentService(newLikeComment);
         return CreatedAtAction(nameof(GetOneLikeComment),new {likeCommentId=newLikeComment.Id},newLikeComment);

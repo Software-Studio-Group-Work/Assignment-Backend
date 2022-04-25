@@ -40,4 +40,9 @@ public class LikePostService{
         return exists;
     }
 
+    public bool likePostIsCreated(string userId,string postId){
+         bool exists = _likePostsCollection.Find(_ => _.userId== userId&&_.postId== postId).Any();
+        return exists;
+    }
+
 }

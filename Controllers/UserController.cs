@@ -103,8 +103,8 @@ public class UserController: ControllerBase {
         if(!_userService.userIdExists(userId)){
             return NotFound("The user doesn't exist.");
         }
-        
-        await _announcementService.DeleteAnnouncementByUserService(userId);
+
+        await _announcementService.DeleteAnnouncementByAdminService(userId);
         await _commentService.DeleteCommentByUserService(userId);
         await _likeCommentService.DeleteLikeCommentByUserService(userId);
         await _likePostService.DeleteLikePostByUserService(userId);

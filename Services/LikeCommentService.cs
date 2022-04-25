@@ -41,5 +41,9 @@ public class LikeCommentService{
          bool exists = _likeCommentsCollection.Find(_ => _.Id== likeCommentId).Any();
         return exists;
     }
+        public bool likeCommentIsCreated(string userId,string commentId){
+         bool exists = _likeCommentsCollection.Find(_ => _.userId== userId&&_.commentId== commentId).Any();
+        return exists;
+    }
 
 }

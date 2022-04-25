@@ -35,8 +35,8 @@ public class AnnouncementService{
         await _announcementsCollection.DeleteOneAsync(x => x.Id == announcementId);
         return;
     }
-        public async Task DeleteAnnouncementByUserService(string userId) { 
-        FilterDefinition<Announcement> filter= Builders<Announcement>.Filter.Eq("userId", userId);
+        public async Task DeleteAnnouncementByAdminService(string adminId) { 
+        FilterDefinition<Announcement> filter= Builders<Announcement>.Filter.Eq("adminId", adminId);
         await _announcementsCollection.DeleteManyAsync(filter);
         return;
     }
